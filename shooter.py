@@ -43,7 +43,7 @@ def distance(dist):
     # multiply with the sonic speed (34300 cm/s)
     # and divide by 2, because there and back
     dist.value = (TimeElapsed * 34300) / 2
-    time.sleep(1)
+    time.sleep(0.1)
  
 dist = multiprocessing.Value('f')
 p = multiprocessing.Process(target=distance,args=(dist,))
