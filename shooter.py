@@ -45,7 +45,7 @@ def distance(dist):
     dist.value = (TimeElapsed * 34300) / 2
     time.sleep(1)
  
-dist = multiprocessing.Value('i')
+dist = multiprocessing.Value('f')
 p = multiprocessing.Process(target=distance,args=(dist,))
 p.daemon = True
 p.start()
