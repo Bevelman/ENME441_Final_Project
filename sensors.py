@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 import time
 import multiprocessing
 import smbus			#import SMBus module of I2C
+import math
  
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
@@ -65,6 +66,27 @@ Device_Address = 0x68   # MPU6050 device address
 
 MPU_Init()
 
+def readAngle(angles,accel,rot):
+  while True:
+  #Read Gyroscope raw value
+    gyro_x=read_raw_data(GYRO_XOUT_H)
+    gyro_y=read_raw_data(GYRO_YOUT_H)
+    gyro_z=read_raw_data(GYRO_ZOUT_H)
+    #Read Accelerometer raw value
+    acc_x=read_raw_data(ACCEL_XOUT_H)
+    acc_y=read_raw_data(ACCEL_YOUT_H)
+    acc_z=read_raw_data(ACCEL_ZOUT_H)
+    #Full scale range +/- 250 degree/C as per sensitivity scale factor
+    angles[0]=gyro_x/131.0
+    angles[1]=gyro_y/131.0
+    angles[2]=gyro_z/131.0
+    accel[0]=acc_x/16384.0
+    accel[1]=acc_y/16384.0
+    accel[2]=acc_z/16384.0
+    rot[0]=-math.degrees(math.atan2(accel[0],dist(accel[1],accel[2])))
+    rot[1]=math.degrees(math.atan2(accel[1],dist(accel[0],accel[2])))
+    time.sleep(1)
+
 #Read distance fromUltrasonic Sensor
 def distance(dist):
   while True:
@@ -93,34 +115,6 @@ def distance(dist):
     # and divide by 2, because there and back
     dist.value = (TimeElapsed * 34300) / 2
     time.sleep(0.5)
-
-def readAngle(angles,accel,rot):
-  while True:
-
-	  #Read Gyroscope raw value
-	  gyro_x = read_raw_data(GYRO_XOUT_H)
-	  gyro_y = read_raw_data(GYRO_YOUT_H)
-	  gyro_z = read_raw_data(GYRO_ZOUT_H)
-	
-    #Read Accelerometer raw value
-	  acc_x = read_raw_data(ACCEL_XOUT_H)
-	  acc_y = read_raw_data(ACCEL_YOUT_H)
-	  acc_z = read_raw_data(ACCEL_ZOUT_H)
-
-	  #Full scale range +/- 250 degree/C as per sensitivity scale factor
-	
-	  angles[0] = gyro_x/131.0
-	  angles[1] = gyro_y/131.0
-	  angles[2] = gyro_z/131.0
-
-    accel[0] = acc_x/16384.0
-	  accel[1] = acc_y/16384.0
-	  accel[2] = acc_z/16384.0
-
-
-    rot[0] = -math.degrees(math.atan2(accel[0], dist(accel[1],accel[2])))
-    rot[1] =  math.degrees(math.atan2(accel[1], dist(accel[0],accel[2])))
-	  time.sleep(1)
 
 #Run ultrasonic code
 dist = multiprocessing.Value('f')

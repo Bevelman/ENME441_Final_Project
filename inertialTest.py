@@ -70,3 +70,29 @@ while True:
 
 	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\t) 	
 	sleep(1)
+
+def readAngle(angles,accel,rot):
+  while True:
+
+	  #Read Gyroscope raw value
+	  gyro_x = read_raw_data(GYRO_XOUT_H)
+	  gyro_y = read_raw_data(GYRO_YOUT_H)
+	  gyro_z = read_raw_data(GYRO_ZOUT_H)
+	
+    #Read Accelerometer raw value
+	  acc_x = read_raw_data(ACCEL_XOUT_H)
+	  acc_y = read_raw_data(ACCEL_YOUT_H)
+	  acc_z = read_raw_data(ACCEL_ZOUT_H)
+
+	  #Full scale range +/- 250 degree/C as per sensitivity scale factor
+	  angles[0] = gyro_x/131.0
+	  angles[1] = gyro_y/131.0
+	  angles[2] = gyro_z/131.0
+
+	  accel[0] = acc_x/16384.0
+	  accel[1] = acc_y/16384.0
+    accel[2] = acc_z/16384.0
+
+    rot[0] = -math.degrees(math.atan2(accel[0], dist(accel[1],accel[2])))
+    rot[1] = math.degrees(math.atan2(accel[1], dist(accel[0],accel[2])))
+	  time.sleep(1)
