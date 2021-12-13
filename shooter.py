@@ -17,7 +17,7 @@ GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 #Read distance fromUltrasonic Sensor
-def distance():
+def distance(dist):
   while True:
 
     # set Trigger to HIGH
