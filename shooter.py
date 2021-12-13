@@ -3,6 +3,7 @@ from signal import signal, SIGTERM, SIGHUP, pause
 from rpi_lcd import LCD
 import RPi.GPIO as GPIO
 import time
+import multiprocessing
  
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
@@ -17,6 +18,8 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 #Read distance fromUltrasonic Sensor
 def distance():
+  while True:
+
     # set Trigger to HIGH
     GPIO.output(GPIO_TRIGGER, True)
  
@@ -39,23 +42,24 @@ def distance():
     TimeElapsed = StopTime - StartTime
     # multiply with the sonic speed (34300 cm/s)
     # and divide by 2, because there and back
-    distance = (TimeElapsed * 34300) / 2
+    dist.value = (TimeElapsed * 34300) / 2
+    time.sleep(1)
  
-    return distance
+dist = multiprocessing.Value('i')
+p = multiprocessing.Process(target=distance,args=(dist,))
+p.daemon = True
+p.start
 
 lcd = LCD()
 def safe_exit(signum, frame):
     exit(1)
 try:
-  while True:
-    signal(SIGTERM, safe_exit)
-    signal(SIGHUP, safe_exit)
-    dist = distance()
-    lcd.text("Distance = %.1f cm" % dist, 1)
-    time.sleep(1)
-    pause()
+  signal(SIGTERM, safe_exit)
+  signal(SIGHUP, safe_exit)
+  lcd.text("Dist = %.1f cm" % dist.value, 1)
+  pause()
 except KeyboardInterrupt:
-    GPIO.cleanup()
-    pass
+  GPIO.cleanup()
+  pass
 finally:
-    lcd.clear()
+  lcd.clear()
