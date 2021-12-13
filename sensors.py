@@ -127,7 +127,7 @@ us.start()
 
 #Run Gyroscope code
 rot = multiprocessing.Array('f',2)
-gyro = multiprocessing.Process(target=readAngle,args=(rot))
+gyro = multiprocessing.Process(target=readAngle,args=(rot,))
 gyro.daemon = True
 gyro.start()
 
