@@ -84,8 +84,8 @@ def readAngle(rot):
     Gx = gyro_x/131.0
     Gy = gyro_y/131.0
     Gz = gyro_z/131.0
-    rad1=math.atan2(Ax,dist(Ay,Az))
-    rad2=math.atan2(Ay,dist(Ax,Az))
+    rad1=math.atan2(Ax,math.sqrt((Ay*Ay)+(Az*Az)))
+    rad2=math.atan2(Ay,math.sqrt((Ax*Ax)+(Az*Az)))
     rot[0]=-math.degrees(rad1)
     rot[1]=math.degrees(rad2)
     time.sleep(1)
