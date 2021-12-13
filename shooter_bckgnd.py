@@ -39,7 +39,7 @@ try:
     data = json.loads("'slider1':slider1_val, 'slider2':slider2_val, 'launch':0")  
 
     # Get data from the file:
-    with open("led-pwm-multiple.txt", 'r') as f:
+    with open("shooter.txt", 'r') as f:
       data = json.load(f)
 
     # Rotate the servos based on slider input
