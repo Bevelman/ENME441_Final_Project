@@ -134,5 +134,7 @@ try:
     #pause()
 except KeyboardInterrupt:
   GPIO.cleanup()
+  us.terminate()
+  gyro.terminate()
 finally:
   lcd.clear()
