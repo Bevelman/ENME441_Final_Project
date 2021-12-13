@@ -83,8 +83,10 @@ def readAngle(angles,accel,rot):
     accel[0]=acc_x/16384.0
     accel[1]=acc_y/16384.0
     accel[2]=acc_z/16384.0
-    rot[0]=-math.degrees(math.atan2(accel[0],dist(accel[1],accel[2])))
-    rot[1]=math.degrees(math.atan2(accel[1],dist(accel[0],accel[2])))
+    rad1=math.atan2(accel[0],dist(accel[1],accel[2]))
+    rad2=math.atan2(accel[1],dist(accel[0],accel[2]))
+    rot[0]=-math.degrees(rad1)
+    rot[1]=math.degrees(rad2)
     time.sleep(1)
 
 #Read distance fromUltrasonic Sensor
