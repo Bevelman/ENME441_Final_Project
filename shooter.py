@@ -130,7 +130,7 @@ try:
   #signal(SIGHUP, safe_exit)
   while True:
     lcd.text("Dist = %.1f cm" % dist.value, 1)
-    lcd.text("Gx=%.2f" %angles[0], u'\u00b0'+ "/s", "\tGy=%.2f" %angles[1], u'\u00b0'+ "/s", "\tGz=%.2f" %angles[2], u'\u00b0'+ "/s")
+    lcd.text("Gx=%.2f " % angles[0], "Gy=%.2f " % angles[1], "Gz=%.2f" %angles[2])
     #pause()
 except KeyboardInterrupt:
   GPIO.cleanup()
