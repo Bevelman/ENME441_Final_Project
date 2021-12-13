@@ -56,9 +56,10 @@ def safe_exit(signum, frame):
 try:
   #signal(SIGTERM, safe_exit)
   #signal(SIGHUP, safe_exit)
-  lcd.text("Dist = %.1f cm" % dist.value, 1)
-  time.sleep(1)
-  #pause()
+  while True:
+    lcd.text("Dist = %.1f cm" % dist.value, 1)
+    time.sleep(1)
+    #pause()
 except KeyboardInterrupt:
   GPIO.cleanup()
   p.terminate()
