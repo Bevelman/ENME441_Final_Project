@@ -1,4 +1,6 @@
 #Libraries
+from signal import signal, SIGTERM, SIGHUP, pause
+from rpi_lcd import LCD
 import RPi.GPIO as GPIO
 import time
  
@@ -12,7 +14,8 @@ GPIO_ECHO = 25
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
- 
+
+#Read distance fromUltrasonic Sensor
 def distance():
     # set Trigger to HIGH
     GPIO.output(GPIO_TRIGGER, True)
@@ -39,15 +42,20 @@ def distance():
     distance = (TimeElapsed * 34300) / 2
  
     return distance
- 
-if __name__ == '__main__':
-    try:
-        while True:
-            dist = distance()
-            print ("Distance = %.1f cm" % dist)
-            time.sleep(1)
- 
-        # Reset by pressing CTRL + C
-    except KeyboardInterrupt:
-        print("Measurement stopped by User")
-        GPIO.cleanup()
+
+lcd = LCD()
+def safe_exit(signum, frame):
+    exit(1)
+try:
+  while True:
+    signal(SIGTERM, safe_exit)
+    signal(SIGHUP, safe_exit)
+    dist = distance()
+    lcd.text("Distance = %.1f cm" % dist, 1)
+    time.sleep(1)
+    pause()
+except KeyboardInterrupt:
+    GPIO.cleanup()
+    pass
+finally:
+    lcd.clear()
