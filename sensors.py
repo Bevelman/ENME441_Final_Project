@@ -66,7 +66,7 @@ Device_Address = 0x68   # MPU6050 device address
 
 MPU_Init()
 
-def readAngle(angles,accel,rot):
+def readAngle(rot):
   while True:
   #Read Gyroscope raw value
     gyro_x=read_raw_data(GYRO_XOUT_H)
@@ -77,14 +77,15 @@ def readAngle(angles,accel,rot):
     acc_y=read_raw_data(ACCEL_YOUT_H)
     acc_z=read_raw_data(ACCEL_ZOUT_H)
     #Full scale range +/- 250 degree/C as per sensitivity scale factor
-    angles[0]=gyro_x/131.0
-    angles[1]=gyro_y/131.0
-    angles[2]=gyro_z/131.0
-    accel[0]=acc_x/16384.0
-    accel[1]=acc_y/16384.0
-    accel[2]=acc_z/16384.0
-    rad1=math.atan2(accel[0],dist(accel[1],accel[2]))
-    rad2=math.atan2(accel[1],dist(accel[0],accel[2]))
+    Ax = acc_x/16384.0
+    Ay = acc_y/16384.0
+    Az = acc_z/16384.0
+	
+    Gx = gyro_x/131.0
+    Gy = gyro_y/131.0
+    Gz = gyro_z/131.0
+    rad1=math.atan2(Ax,dist(Ay,Az))
+    rad2=math.atan2(Ay,dist(Ax,Az))
     rot[0]=-math.degrees(rad1)
     rot[1]=math.degrees(rad2)
     time.sleep(1)
@@ -125,10 +126,8 @@ us.daemon = True
 us.start()
 
 #Run Gyroscope code
-angles = multiprocessing.Array('f',3)
-accel = multiprocessing.Array('f',3)
 rot = multiprocessing.Array('f',2)
-gyro = multiprocessing.Process(target=readAngle,args=(angles,accel,rot))
+gyro = multiprocessing.Process(target=readAngle,args=(rot))
 gyro.daemon = True
 gyro.start()
 
