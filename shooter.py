@@ -108,7 +108,7 @@ def readAngle(angles):
 	  angles[1] = gyro_y/131.0
 	  angles[2] = gyro_z/131.0
  	
-	  sleep(1)
+	  time.sleep(1)
 
 #Run ultrasonic code
 dist = multiprocessing.Value('f')
