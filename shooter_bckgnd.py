@@ -26,6 +26,7 @@ pwmM = GPIO.PWM(leftMPin, 50) # controls flywheels
 pwmx.start(0)
 pwmy.start(0)
 pwmL.start(0)
+pwmM.start(0)
 #initialize to halfway to hold projectile in place
 pwmL.ChangeDutyCycle(7)
 
