@@ -48,7 +48,7 @@ def distance():
 dist = multiprocessing.Value('i')
 p = multiprocessing.Process(target=distance,args=(dist,))
 p.daemon = True
-p.start
+p.start()
 
 lcd = LCD()
 def safe_exit(signum, frame):
