@@ -54,6 +54,9 @@ try:
       pwmL.ChangeDutyCycle(3) #load projectile
       time.sleep(0.5)
       pwmL.ChangeDutyCycle(12) #push projectile into flywheels
+      time.sleep(0.5)
+      pwmL.ChangeDutyCycle(7) #return to starting position
+      pwmM.ChangeDutyCycle(0) #turn off flywheels
     time.sleep(0.1)  # small sleep step to avoid re-opening the file too often
     
 
