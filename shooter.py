@@ -1,5 +1,5 @@
 #Libraries
-from signal import signal, SIGTERM, SIGHUP, pause
+#from signal import signal, SIGTERM, SIGHUP, pause
 from rpi_lcd import LCD
 import RPi.GPIO as GPIO
 import time
@@ -54,12 +54,13 @@ lcd = LCD()
 def safe_exit(signum, frame):
     exit(1)
 try:
-  signal(SIGTERM, safe_exit)
-  signal(SIGHUP, safe_exit)
+  #signal(SIGTERM, safe_exit)
+  #signal(SIGHUP, safe_exit)
   lcd.text("Dist = %.1f cm" % dist.value, 1)
-  pause()
+  time.sleep(1)
+  #pause()
 except KeyboardInterrupt:
   GPIO.cleanup()
-  pass
+  p.terminate()
 finally:
   lcd.clear()
