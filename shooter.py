@@ -58,7 +58,6 @@ try:
   #signal(SIGHUP, safe_exit)
   while True:
     lcd.text("Dist = %.1f cm" % dist.value, 1)
-    time.sleep(1)
     #pause()
 except KeyboardInterrupt:
   GPIO.cleanup()
